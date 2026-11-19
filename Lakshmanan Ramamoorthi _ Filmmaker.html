@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lakshmanan Ramamoorthi | Filmmaker & Developer</title>
+<style>
+  :root {
+    --bg: #0b0d12;
+    --panel: #141823;
+    --panel-2: #1a2030;
+    --text: #e9ecf3;
+    --muted: #8b93a7;
+    --gold: #f2b84b;
+    --red: #e5484d;
+    --teal: #4fd1c5;
+    --line: #262d3f;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(242,184,75,0.12), transparent 60%),
+      radial-gradient(ellipse at 90% 110%, rgba(229,72,77,0.10), transparent 55%),
+      var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.65;
+    min-height: 100vh;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .mono { font-family: "Courier New", ui-monospace, Menlo, Consolas, monospace; }
+
+  /* film-strip sprocket edges on both sides */
+  .strip {
+    position: fixed; top: 0; bottom: 0; width: 18px; z-index: 0; pointer-events: none;
+    background:
+      repeating-linear-gradient(to bottom, transparent 0 14px, #05060a 14px 22px),
+      #0f1219;
+    opacity: 0.9;
+  }
+  .strip.left { left: 0; }
+  .strip.right { right: 0; }
+  .strip::after {
+    content: ""; position: absolute; inset: 0;
+    background: repeating-linear-gradient(to bottom, transparent 0 22px, #2a3144 22px 30px, transparent 30px 60px);
+    opacity: 0.35;
+  }
+
+  main { position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 36px 44px 60px; }
+
+  /* hero */
+  .hero {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: linear-gradient(160deg, var(--panel-2), var(--panel));
+    padding: 36px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px);
+    pointer-events: none;
+  }
+  .rec { color: var(--red); font-size: 13px; letter-spacing: 2px; display: flex; align-items: center; gap: 8px; }
+  .rec::before {
+    content: ""; width: 9px; height: 9px; border-radius: 50%;
+    background: var(--red); box-shadow: 0 0 10px var(--red);
+    animation: blink 1.6s steps(2, start) infinite;
+  }
+  @keyframes blink { to { visibility: hidden; } }
+  h1 { margin: 14px 0 6px; font-size: clamp(28px, 6vw, 44px); letter-spacing: 1px; }
+  .role { color: var(--gold); font-size: 16px; margin: 0 0 16px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--muted); font-size: 14px; }
+  .meta a { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; }
+  .timecode { position: absolute; right: 22px; bottom: 16px; color: var(--muted); font-size: 12px; }
+
+  /* section headers styled like terminal / slate */
+  section { margin-top: 26px; }
+  .label {
+    color: var(--gold); font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;
+    margin: 0 0 12px;
+  }
+  .label::before { content: "// "; color: var(--muted); }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 24px;
+  }
+  .card p { margin: 0 0 8px; color: #d6dae4; }
+
+  /* films as scene cards */
+  .films { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .film {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 0;
+    overflow: hidden;
+  }
+  .frame {
+    height: 110px;
+    background: linear-gradient(135deg, #2a1a22, #0e1830 60%, #1f2a10);
+    position: relative;
+    border-bottom: 1px solid var(--line);
+  }
+  .frame span {
+    position: absolute; left: 12px; bottom: 8px;
+    font-size: 12px; color: var(--muted); letter-spacing: 1px;
+  }
+  .film .body { padding: 16px 18px 18px; }
+  .film h3 { margin: 0 0 4px; font-size: 17px; }
+  .roles { color: var(--muted); font-size: 13px; margin: 0 0 10px; }
+  .film ul { margin: 0; padding-left: 18px; color: #d6dae4; font-size: 14px; }
+  .film li { margin-bottom: 3px; }
+  .watch {
+    display: inline-block; margin-top: 12px; padding: 7px 14px; border-radius: 999px;
+    border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 13px;
+  }
+  .watch:hover { background: var(--gold); color: #111; }
+
+  /* skills as code-style chips */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-family: "Courier New", ui-monospace, monospace;
+    font-size: 13px;
+    padding: 6px 11px;
+    border-radius: 6px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    color: var(--teal);
+  }
+  .chip.gold { color: var(--gold); }
+  .chip.red { color: #ff7b7f; }
+
+  /* timeline */
+  .timeline { position: relative; padding-left: 22px; border-left: 2px solid var(--line); }
+  .item { position: relative; margin-bottom: 18px; }
+  .item::before {
+    content: ""; position: absolute; left: -29px; top: 6px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 0 4px var(--bg);
+  }
+  .item h4 { margin: 0; font-size: 16px; }
+  .item .when { color: var(--muted); font-size: 13px; }
+
+  .cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+  .btn {
+    padding: 10px 18px; border-radius: 999px; text-decoration: none; font-size: 14px;
+    border: 1px solid var(--teal); color: var(--teal);
+  }
+  .btn.solid { background: var(--teal); color: #0b0d12; border-color: var(--teal); font-weight: bold; }
+  .btn:hover { opacity: 0.85; }
+
+  footer { margin-top: 36px; text-align: center; color: var(--muted); font-size: 13px; }
+  footer .mono { color: var(--gold); }
+
+  @media (max-width: 600px) {
+    main { padding: 28px 22px 48px; }
+    .hero, .card { padding: 22px 20px; }
+    .strip { width: 12px; }
+    .timecode { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="strip left"></div>
+<div class="strip right"></div>
+
+<main>
+
+  <div class="hero">
+    <div class="rec mono">REC &nbsp;&bull;&nbsp; SCENE 01</div>
+    <h1>Lakshmanan Ramamoorthi</h1>
+    <p class="role mono">Filmmaker &nbsp;/&nbsp; Director &nbsp;/&nbsp; Developer (MERN Stack, course completed)</p>
+    <div class="meta">
+      <span>Chennai, Tamil Nadu</span>
+      <span>+91 90037 69531</span>
+      <a href="mailto:pradeepkumarjo406@gmail.com">pradeepkumarjo406@gmail.com</a>
+    </div>
+    <div class="timecode mono">00:00:00:00</div>
+  </div>
+
+  <section>
+    <p class="label">About</p>
+    <div class="card">
+      <p>Tamil filmmaker who writes, directs, shoots, and edits short films, with music editing on his projects. Works on shot planning and actor direction, and brings a developer's habit of building things step by step to the creative process.</p>
+      <p>Currently looking to join film and short film projects as a director, assistant director, or crew member. Also building web skills through MERN stack training.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="label">Films</p>
+    <div class="films">
+
+      <article class="film">
+        <div class="frame"><span class="mono">SCENE 01 / MAY 2026</span></div>
+        <div class="body">
+          <h3>Love Is Blind</h3>
+          <p class="roles">Short Film &nbsp;|&nbsp; Director, Writer, Editor, Cinematographer, Music Editing</p>
+          <ul>
+            <li>Wrote, directed, and edited the film</li>
+            <li>Handled shot planning and camera work</li>
+            <li>Handled music editing</li>
+          </ul>
+          <a class="watch mono" href="https://youtu.be/KleGWozbF3w" target="_blank" rel="noopener">&#9654; Watch</a>
+        </div>
+      </article>
+
+      <article class="film">
+        <div class="frame" style="background: linear-gradient(135deg, #1c1830, #0a1a1a 60%, #2a1010);"><span class="mono">SCENE 02 / NOV 2025</span></div>
+        <div class="body">
+          <h3>Enmity</h3>
+          <p class="roles">Short Film &nbsp;|&nbsp; Assistant Director, Editor, Cinematographer, Music Editing</p>
+          <a class="watch mono" href="https://youtu.be/NwdfYbrothM" target="_blank" rel="noopener">&#9654; Watch Trailer</a>
+        </div>
+      </article>
+
+      <article class="film">
+        <div class="frame" style="background: linear-gradient(135deg, #0f1f1c, #101018 60%, #1f1a10);"><span class="mono">SCENE 03 / 2024</span></div>
+        <div class="body">
+          <h3>Silent</h3>
+          <p class="roles">College Short Film &nbsp;|&nbsp; Cinematographer</p>
+        </div>
+      </article>
+
+      <article class="film">
+        <div class="frame" style="background: linear-gradient(135deg, #2a2010, #111 60%, #1a1a2a);"><span class="mono">SCENE 04 / TRAILER</span></div>
+        <div class="body">
+          <h3>One Rupee</h3>
+          <p class="roles">Short Film</p>
+          <a class="watch mono" href="https://youtu.be/MEwj4unfaZ8" target="_blank" rel="noopener">&#9654; Watch Trailer</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <p class="label">Stack</p>
+    <div class="card">
+      <p class="mono" style="color: var(--muted); font-size: 13px; margin-bottom: 10px;">// filmmaking</p>
+      <div class="chips" style="margin-bottom: 16px;">
+        <span class="chip gold">Direction</span>
+        <span class="chip gold">Actor Direction</span>
+        <span class="chip gold">Script Analysis</span>
+        <span class="chip gold">Screenwriting</span>
+        <span class="chip gold">Shot Planning</span>
+        <span class="chip gold">Cinematography</span>
+      </div>
+      <p class="mono" style="color: var(--muted); font-size: 13px; margin-bottom: 10px;">// post-production</p>
+      <div class="chips" style="margin-bottom: 16px;">
+        <span class="chip">CapCut</span>
+        <span class="chip">DaVinci Resolve</span>
+        <span class="chip">Music Editing</span>
+      </div>
+      <p class="mono" style="color: var(--muted); font-size: 13px; margin-bottom: 10px;">// development</p>
+      <div class="chips">
+        <span class="chip red">MERN Stack (certified, Aug 2025)</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="label">Experience</p>
+    <div class="card">
+      <div class="timeline">
+        <div class="item">
+          <h4>Application Engineer, Techmath Engineering (at Royal Enfield)</h4>
+          <div class="when mono">Present</div>
+        </div>
+        <div class="item">
+          <h4>Full Stack Web Development (MERN), 8-month course with Capstone Project, Entri</h4>
+          <div class="when mono">Completed August 2025 | Cert ID: CHORIZW-VWMT</div>
+        </div>
+        <div class="item">
+          <h4>Bachelor of Commerce (B.Com)</h4>
+          <div class="when mono">Education</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="label">Watch and Connect</p>
+    <div class="card">
+      <div class="cta">
+        <a class="btn solid" href="https://youtu.be/KleGWozbF3w" target="_blank" rel="noopener">Watch Love Is Blind</a>
+        <a class="btn" href="https://www.youtube.com/@Mens_Club_TN-60" target="_blank" rel="noopener">YouTube</a>
+        <a class="btn" href="https://www.instagram.com/pradeep_ramamoorthi/" target="_blank" rel="noopener">Instagram</a>
+        <a class="btn" href="mailto:pradeepkumarjo406@gmail.com">Email</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="mono">
+    <span>&copy; Lakshmanan Ramamoorthi</span> &nbsp;|&nbsp; <span>END OF REEL</span>
+  </footer>
+
+</main>
+</body>
+</html>
